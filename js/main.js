@@ -88,4 +88,5 @@ function generateAds(count) {
 }
 
 const ads = generateAds(TOTAL_ADS);
+// eslint-disable-next-line no-console
 console.log(ads);
