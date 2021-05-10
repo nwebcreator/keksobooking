@@ -13,46 +13,46 @@ const MIN_GUESTS = 1;
 const MAX_GUESTS = 12;
 
 const generateLocation = () => {
-    const x = getRandomFloat(35.65, 35.7, 5);
-    const y = getRandomFloat(139.7, 139.8, 5);
-    // x: x, y: y
-    return { x, y };
+  const x = getRandomFloat(35.65, 35.7, 5);
+  const y = getRandomFloat(139.7, 139.8, 5);
+  // x: x, y: y
+  return { x, y };
 };
 
 const generateAuthor = () => {
-    const num = getRandomInteger(1, 8);
-    const avatar = `img/avatars/user0${num}.png`;
-    return { avatar };
+  const num = getRandomInteger(1, 8);
+  const avatar = `img/avatars/user0${num}.png`;
+  return { avatar };
 };
 
 const generateOffer = (location) => {
-    const title = getRandomElementFromArray(TITLES);
-    const address = `${location.x}, ${location.y}`;
-    const price = getRandomInteger(MIN_PRICE, MAX_PRICE);
-    const type = getRandomElementFromArray(TYPES);
-    const rooms = getRandomInteger(MIN_ROOMS, MAX_ROOMS);
-    const guests = getRandomInteger(MIN_GUESTS, MAX_GUESTS);
-    const checkin = getRandomElementFromArray(CHECK_IN_OUT_TIME);
-    const checkout = getRandomElementFromArray(CHECK_IN_OUT_TIME);
-    const features = getRandomUniqueElementsFromArray(FEATURES);
-    const description = 'Сдается';
-    const photos = getRandomUniqueElementsFromArray(PHOTOS);
-    return { title, address, price, type, rooms, guests, checkin, checkout, features, description, photos };
+  const title = getRandomElementFromArray(TITLES);
+  const address = `${location.x}, ${location.y}`;
+  const price = getRandomInteger(MIN_PRICE, MAX_PRICE);
+  const type = getRandomElementFromArray(TYPES);
+  const rooms = getRandomInteger(MIN_ROOMS, MAX_ROOMS);
+  const guests = getRandomInteger(MIN_GUESTS, MAX_GUESTS);
+  const checkin = getRandomElementFromArray(CHECK_IN_OUT_TIME);
+  const checkout = getRandomElementFromArray(CHECK_IN_OUT_TIME);
+  const features = getRandomUniqueElementsFromArray(FEATURES);
+  const description = 'Сдается';
+  const photos = getRandomUniqueElementsFromArray(PHOTOS);
+  return { title, address, price, type, rooms, guests, checkin, checkout, features, description, photos };
 };
 
 const generateAd = () => {
-    const author = generateAuthor();
-    const location = generateLocation();
-    const offer = generateOffer(location);
-    return { author, offer, location };
+  const author = generateAuthor();
+  const location = generateLocation();
+  const offer = generateOffer(location);
+  return { author, offer, location };
 };
 
 const generateAds = (count) => {
-    const ads = [];
-    for (let i = 0; i < count; i++) {
-        ads.push(generateAd());
-    }
-    return ads;
+  const ads = [];
+  for (let i = 0; i < count; i++) {
+    ads.push(generateAd());
+  }
+  return ads;
 };
 
 export { generateAds };
