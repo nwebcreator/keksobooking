@@ -1,6 +1,8 @@
 import { getRandomInteger, getRandomFloat, getRandomElementFromArray, getRandomUniqueElementsFromArray } from './util.js';
+const TOTAL_ADS = 10;
 
-const TYPES = ['place', 'flat', 'house', 'bungalow'];
+
+const TYPES = ['palace', 'flat', 'house', 'bungalow'];
 const CHECK_IN_OUT_TIME = ['12:00', '13:00', '14:00'];
 const FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 const PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
@@ -11,6 +13,13 @@ const MIN_ROOMS = 1;
 const MAX_ROOMS = 6;
 const MIN_GUESTS = 1;
 const MAX_GUESTS = 12;
+
+const PlaceTypes = {
+  flat: 'Квартира',
+  bungalow: 'Бунгало',
+  house: 'Дом',
+  palace: 'Дворец',
+};
 
 const generateLocation = () => {
   const x = getRandomFloat(35.65, 35.7, 5);
@@ -47,12 +56,12 @@ const generateAd = () => {
   return { author, offer, location };
 };
 
-const generateAds = (count) => {
+const generateAds = () => {
   const ads = [];
-  for (let i = 0; i < count; i++) {
+  for (let i = 0; i < TOTAL_ADS; i++) {
     ads.push(generateAd());
   }
   return ads;
 };
 
-export { generateAds };
+export { generateAds, PlaceTypes };
