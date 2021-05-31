@@ -1,7 +1,6 @@
 import { generateAds } from './data.js';
+import { generateAdMarkup } from './generate-markup.js';
 
-const TOTAL_ADS = 10;
+const ads = generateAds();
 
-const ads = generateAds(TOTAL_ADS);
-// eslint-disable-next-line no-console
-console.log(ads);
+generateAdMarkup(ads[0]);
