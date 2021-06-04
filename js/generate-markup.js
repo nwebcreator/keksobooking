@@ -1,4 +1,4 @@
-import {PlaceTypes} from './data.js';
+import {HouseTypeDescriptions} from './data.js';
 
 const generateAdMarkup = (ad) => {
   const offer = ad.offer;
@@ -17,7 +17,7 @@ const generateAdMarkup = (ad) => {
   popupPrice.textContent = `${offer.price} ₽/ночь`;
 
   const popupType = popupElement.querySelector('.popup__type');
-  popupType.textContent = PlaceTypes[offer.type];
+  popupType.textContent = HouseTypeDescriptions[offer.type];
 
   const popupCapacity = popupElement.querySelector('.popup__text--capacity');
   popupCapacity.textContent = `${offer.rooms} комнаты для ${offer.guests} гостей`;
