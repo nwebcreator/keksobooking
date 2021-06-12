@@ -52,8 +52,7 @@ const generateAdMarkup = (ad) => {
   const popupAvatar = popupElement.querySelector('.popup__avatar');
   popupAvatar.src = author.avatar;
 
-  const mapCanvas = document.querySelector('#map-canvas');
-  mapCanvas.appendChild(popupElement);
+  return popupElement;
 };
 
 export {generateAdMarkup};

@@ -27,10 +27,9 @@ const HouseTypeDescriptions = {
 };
 
 const generateLocation = () => {
-  const x = getRandomFloat(35.65, 35.7, 5);
-  const y = getRandomFloat(139.7, 139.8, 5);
-  // x: x, y: y
-  return { x, y };
+  const lat = getRandomFloat(59.8, 59.99, 5);
+  const lng = getRandomFloat(30.2, 30.45, 5);
+  return { lat, lng };
 };
 
 const generateAuthor = () => {
@@ -41,7 +40,7 @@ const generateAuthor = () => {
 
 const generateOffer = (location) => {
   const title = getRandomElementFromArray(TITLES);
-  const address = `${location.x}, ${location.y}`;
+  const address = `${location.lat}, ${location.lng}`;
   const price = getRandomInteger(MIN_PRICE, MAX_PRICE);
   const type = getRandomElementFromArray(Object.values(HouseTypes));
   const rooms = getRandomInteger(MIN_ROOMS, MAX_ROOMS);
