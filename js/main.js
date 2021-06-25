@@ -1,12 +1,13 @@
 import { generateAds } from './data.js';
 import { generateAdMarkup } from './generate-markup.js';
-import { setFormRules, disableForms, enableForms, setAddress } from './form.js';
+import { setFormRules, disableForms, enableForms, setAddress, setValidators } from './form.js';
 
 const MAIN_LAT = 59.96831;
 const MAIN_LNG = 30.31748;
 const ads = generateAds();
 
 setFormRules();
+setValidators();
 disableForms();
 
 /* global L:readonly */
