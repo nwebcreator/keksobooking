@@ -1,14 +1,31 @@
-import { generateAds } from './data.js';
 import { generateAdMarkup } from './generate-markup.js';
-import { setFormRules, disableForms, enableForms, setAddress, setValidators } from './form.js';
+import { setFormRules, disableForms, enableForms, setAddress, setValidators, setFormSubmitHandler } from './form.js';
+import { getAds, saveAd } from './server-api.js';
 
-const MAIN_LAT = 59.96831;
-const MAIN_LNG = 30.31748;
-const ads = generateAds();
+const MAIN_LAT = 35.59332;
+const MAIN_LNG = 139.69810;
 
 setFormRules();
 setValidators();
 disableForms();
+setFormSubmitHandler((ad) => {
+  // console.log(ad);
+  saveAd(ad)
+    .then((result) => {
+      //success message
+      if(result)
+      {
+        alert('success');
+      }
+      //fail message
+      else {
+        alert('fail');
+      }
+    })
+    .catch(() => {
+      alert('unknown erro');
+    });
+});
 
 /* global L:readonly */
 const map = L.map('map-canvas')
@@ -17,13 +34,12 @@ const map = L.map('map-canvas')
     setAddress(MAIN_LAT, MAIN_LNG);
   })
   .setView({
-    lat: 59.92749,
-    lng: 30.31127,
+    lat: MAIN_LAT,
+    lng: MAIN_LNG,
   }, 10);
 
 L.tileLayer(
-  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-  {
+  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   },
 ).addTo(map);
@@ -34,16 +50,13 @@ const mainPinIcon = L.icon({
   iconAnchor: [26, 52],
 });
 
-const mainPinMarker = L.marker(
-  {
-    lat: MAIN_LAT,
-    lng: MAIN_LNG,
-  },
-  {
-    draggable: true,
-    icon: mainPinIcon,
-  },
-);
+const mainPinMarker = L.marker({
+  lat: MAIN_LAT,
+  lng: MAIN_LNG,
+}, {
+  draggable: true,
+  icon: mainPinIcon,
+});
 
 mainPinMarker.addTo(map);
 
@@ -52,24 +65,30 @@ mainPinMarker.on('moveend', (evt) => {
   setAddress(latLng.lat, latLng.lng);
 });
 
-ads.forEach((ad) => {
-  const lat = ad.location.lat;
-  const lng = ad.location.lng;
-  const icon = L.icon({
-    iconUrl: '/img/pin.svg',
-    iconSize: [40, 40],
-    iconAnchor: [20, 40],
+getAds()
+  .then((ads) => {
+    ads.forEach((ad) => {
+      const lat = ad.location.lat;
+      const lng = ad.location.lng;
+      const icon = L.icon({
+        iconUrl: '/img/pin.svg',
+        iconSize: [40, 40],
+        iconAnchor: [20, 40],
+      });
+
+      const marker = L.marker({
+        lat,
+        lng,
+      }, {
+        icon,
+      });
+
+      marker.addTo(map).bindPopup(generateAdMarkup(ad));
+    });
+  })
+  .catch((err) => {
+    // eslint-disable-next-line no-console
+    console.log(err);
+    // eslint-disable-next-line no-alert
+    alert('Не смог загрузить данные с сервера');
   });
-
-  const marker = L.marker(
-    {
-      lat,
-      lng,
-    },
-    {
-      icon,
-    },
-  );
-
-  marker.addTo(map).bindPopup(generateAdMarkup(ad));
-});
