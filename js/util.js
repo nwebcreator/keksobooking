@@ -26,15 +26,11 @@ const getRandomFloat = (min, max, fractionDigits) => {
   return parseFloat((Math.random() * (max - min) + min).toFixed(fractionDigits));
 };
 
-const getRandomElementFromArray = (elements) => {
-  return elements[getRandomInteger(0, elements.length - 1)];
-};
+const getRandomElementFromArray = (elements) => elements[getRandomInteger(0, elements.length - 1)];
 
 const getRandomUniqueElementsFromArray = (elements) => {
   const totalCount = getRandomInteger(0, elements.length - 1);
-  const shuffled = elements.slice(0).sort(() => {
-    return 0.5 - Math.random();
-  });
+  const shuffled = elements.slice(0).sort(() => 0.5 - Math.random());
   return shuffled.slice(0, totalCount);
 };
 
