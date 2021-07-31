@@ -1,8 +1,12 @@
 import { HouseTypes } from './data.js';
 
+const MAIN_LAT = 35.59332;
+const MAIN_LNG = 139.69810;
+
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 
+const adForm = document.querySelector('.ad-form');
 const houseTypeSelector = document.querySelector('#type');
 const priceInput = document.querySelector('#price');
 const timeInSelector = document.querySelector('#timein');
@@ -13,6 +17,35 @@ const roomNumberSelector = document.querySelector('#room_number');
 const capacitySelector = document.querySelector('#capacity');
 const avatarInput = document.querySelector('#avatar');
 const imagesInput = document.querySelector('#images');
+//const descriptionInput = document.querySelector('#description');
+const buttonReset = document.querySelector('.ad-form__reset');
+
+const setFormSubmitHandler = (cb) => {
+  adForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    cb(new FormData(adForm));
+
+    // const allFeatures = adForm.querySelectorAll('input[name=features]');
+    // const checkedFeatures = Array.from(allFeatures).filter((it) => it.checked);
+    // const features = checkedFeatures.map((it) => it.value);
+
+    // const ad = {
+    //   avatar: undefined,
+    //   title: titleInput.value,
+    //   address: addressInput.value,
+    //   type: houseTypeSelector.value,
+    //   price: priceInput.value,
+    //   timein: timeInSelector.value,
+    //   timeout: timeOutSelector.value,
+    //   rooms: roomNumberSelector.value,
+    //   capacity: capacitySelector.value,
+    //   features: features,
+    //   description: descriptionInput.value,
+    //   images: undefined,
+    // };
+    // cb(ad);
+  });
+};
 
 const configPriceInput = (selectedHouseType) => {
   if(selectedHouseType === HouseTypes.BUNGALOW) {
@@ -28,6 +61,17 @@ const configPriceInput = (selectedHouseType) => {
     priceInput.min = 10000;
     priceInput.placeholder = 10000;
   }
+};
+
+const setAddress = (x, y) => {
+  addressInput.value = `${x.toFixed(5)}, ${y.toFixed(5)}`;
+};
+
+const resetForm = () => {
+  adForm.reset();
+  setAddress(MAIN_LAT, MAIN_LNG);
+  capacitySelector.value = '1';
+  priceInput.placeholder = 1000;
 };
 
 const setFormRules = () => {
@@ -84,12 +128,12 @@ const setFormRules = () => {
     } else {
       throw new Error('Количество комнат задано неверно');
     }
-  })
-};
+  });
 
-const disableForms = () => {
-  disableInteractiveElements('.ad-form', 'fieldset');
-  disableInteractiveElements('.map__filters', 'fieldset, fieldset>input, select');
+  buttonReset.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    resetForm();
+  });
 };
 
 const disableInteractiveElements = (rootSelector, childrenSelector) => {
@@ -101,11 +145,6 @@ const disableInteractiveElements = (rootSelector, childrenSelector) => {
   }
 };
 
-const enableForms = () => {
-  enableInteractiveElements('.ad-form', 'fieldset');
-  enableInteractiveElements('.map__filters', 'fieldset, fieldset>input, select');
-};
-
 const enableInteractiveElements = (rootSelector, childrenSelector) => {
   const rootElement = document.querySelector(rootSelector);
   rootElement.classList.remove('ad-form--disabled');
@@ -115,8 +154,14 @@ const enableInteractiveElements = (rootSelector, childrenSelector) => {
   }
 };
 
-const setAddress = (x, y) => {
-  addressInput.value = `${x.toFixed(5)}, ${y.toFixed(5)}`;
+const disableForms = () => {
+  disableInteractiveElements('.ad-form', 'fieldset');
+  disableInteractiveElements('.map__filters', 'fieldset, fieldset>input, select');
+};
+
+const enableForms = () => {
+  enableInteractiveElements('.ad-form', 'fieldset');
+  enableInteractiveElements('.map__filters', 'fieldset, fieldset>input, select');
 };
 
 const setValidators = () => {
@@ -137,9 +182,9 @@ const setValidators = () => {
     const valueLength = evt.currentTarget.value.length;
 
     if (valueLength < MIN_TITLE_LENGTH) {
-      evt.currentTarget.setCustomValidity('Ещё ' + (MIN_TITLE_LENGTH - valueLength) + ' симв.');
+      evt.currentTarget.setCustomValidity(`Ещё ${MIN_TITLE_LENGTH - valueLength} симв.`);
     } else if (valueLength > MAX_TITLE_LENGTH) {
-      evt.currentTarget.setCustomValidity('Удалите лишние ' + (valueLength - MAX_TITLE_LENGTH) +' симв.');
+      evt.currentTarget.setCustomValidity(`Удалите лишние ${valueLength - MAX_TITLE_LENGTH} симв.`);
     } else {
       evt.currentTarget.setCustomValidity('');
     }
@@ -160,14 +205,14 @@ const setValidators = () => {
   });
 
   priceInput.addEventListener('keypress', (evt) => {
-    const value = parseInt(evt.key);
+    const value = parseInt(evt.key, 10);
     if(isNaN(value)) {
       evt.preventDefault();
     }
   });
 
   priceInput.addEventListener('input', (evt) => {
-    const value = parseInt(evt.currentTarget.value);
+    const value = parseInt(evt.currentTarget.value, 10);
     if(isNaN(value)) {
       evt.currentTarget.setCustomValidity('Цена должна быть числом.');
     } else {
@@ -180,6 +225,7 @@ const setValidators = () => {
   const imageInputValidator = (evt) => {
     const fileName = evt.currentTarget.value.toLowerCase();
     if(!fileName.endsWith('.png') && !fileName.endsWith('.jpg')) {
+      // eslint-disable-next-line no-alert
       alert('Please upload .png or .jpg file only.');
       return false;
     }
@@ -189,5 +235,4 @@ const setValidators = () => {
   imagesInput.addEventListener('change', imageInputValidator);
 };
 
-
-export {setFormRules, disableForms, enableForms, setAddress, setValidators};
+export { setFormRules, disableForms, enableForms, setAddress, setValidators, setFormSubmitHandler, MAIN_LAT, MAIN_LNG, resetForm };

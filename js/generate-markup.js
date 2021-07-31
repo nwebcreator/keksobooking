@@ -25,28 +25,32 @@ const generateAdMarkup = (ad) => {
   const popupTime = popupElement.querySelector('.popup__text--time');
   popupTime.textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
 
-  const popupFeatures =  popupElement.querySelector('.popup__features');
-  popupFeatures.innerHTML = '';
-  for(let i = 0; i < offer.features.length; i++) {
-    const featureLi = document.createElement('li');
-    featureLi.classList.add('popup__feature');
-    featureLi.classList.add(`popup__feature--${offer.features[i]}`);
-    popupFeatures.appendChild(featureLi);
+  if(offer.features) {
+    const popupFeatures =  popupElement.querySelector('.popup__features');
+    popupFeatures.innerHTML = '';
+    for(let i = 0; i < offer.features.length; i++) {
+      const featureLi = document.createElement('li');
+      featureLi.classList.add('popup__feature');
+      featureLi.classList.add(`popup__feature--${offer.features[i]}`);
+      popupFeatures.appendChild(featureLi);
+    }
   }
 
   const popupDescription = popupElement.querySelector('.popup__description');
   popupDescription.textContent = offer.description;
 
-  const popupPhotos = popupElement.querySelector('.popup__photos');
-  popupPhotos.innerHTML = '';
-  for(let i = 0; i < offer.photos.length; i++) {
-    const photoImg = document.createElement('img');
-    photoImg.classList.add('popup__photo');
-    photoImg.width = 45;
-    photoImg.height = 40;
-    photoImg.alt = 'Фотография жилья';
-    photoImg.src = offer.photos[i];
-    popupPhotos.appendChild(photoImg);
+  if(offer.photos) {
+    const popupPhotos = popupElement.querySelector('.popup__photos');
+    popupPhotos.innerHTML = '';
+    for(let i = 0; i < offer.photos.length; i++) {
+      const photoImg = document.createElement('img');
+      photoImg.classList.add('popup__photo');
+      photoImg.width = 45;
+      photoImg.height = 40;
+      photoImg.alt = 'Фотография жилья';
+      photoImg.src = offer.photos[i];
+      popupPhotos.appendChild(photoImg);
+    }
   }
 
   const popupAvatar = popupElement.querySelector('.popup__avatar');
