@@ -1,9 +1,7 @@
 import { generateAdMarkup } from './generate-markup.js';
-import { setFormRules, disableForms, enableForms, setAddress, setValidators, setFormSubmitHandler } from './form.js';
+import { setFormRules, disableForms, enableForms, setAddress, setValidators, setFormSubmitHandler, MAIN_LAT, MAIN_LNG, resetForm } from './form.js';
 import { getAds, saveAd } from './server-api.js';
-
-const MAIN_LAT = 35.59332;
-const MAIN_LNG = 139.69810;
+import { showSuccessMessage,showErrorMessage } from './message.js';
 
 setFormRules();
 setValidators();
@@ -15,15 +13,17 @@ setFormSubmitHandler((ad) => {
       //success message
       if(result)
       {
-        alert('success');
+        resetForm();
+        showSuccessMessage();
       }
       //fail message
       else {
-        alert('fail');
+        showErrorMessage();
       }
     })
     .catch(() => {
-      alert('unknown erro');
+      showErrorMessage();
+      //alert('unknown error');
     });
 });
 

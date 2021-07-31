@@ -1,5 +1,8 @@
 import { HouseTypes } from './data.js';
 
+const MAIN_LAT = 35.59332;
+const MAIN_LNG = 139.69810;
+
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 
@@ -14,7 +17,8 @@ const roomNumberSelector = document.querySelector('#room_number');
 const capacitySelector = document.querySelector('#capacity');
 const avatarInput = document.querySelector('#avatar');
 const imagesInput = document.querySelector('#images');
-const descriptionInput = document.querySelector('#description');
+//const descriptionInput = document.querySelector('#description');
+const buttonReset = document.querySelector('.ad-form__reset');
 
 const setFormSubmitHandler = (cb) => {
   adForm.addEventListener('submit', (evt) => {
@@ -57,6 +61,17 @@ const configPriceInput = (selectedHouseType) => {
     priceInput.min = 10000;
     priceInput.placeholder = 10000;
   }
+};
+
+const setAddress = (x, y) => {
+  addressInput.value = `${x.toFixed(5)}, ${y.toFixed(5)}`;
+};
+
+const resetForm = () => {
+  adForm.reset();
+  setAddress(MAIN_LAT, MAIN_LNG);
+  capacitySelector.value = '1';
+  priceInput.placeholder = 1000;
 };
 
 const setFormRules = () => {
@@ -114,6 +129,11 @@ const setFormRules = () => {
       throw new Error('Количество комнат задано неверно');
     }
   });
+
+  buttonReset.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    resetForm();
+  });
 };
 
 const disableInteractiveElements = (rootSelector, childrenSelector) => {
@@ -142,10 +162,6 @@ const disableForms = () => {
 const enableForms = () => {
   enableInteractiveElements('.ad-form', 'fieldset');
   enableInteractiveElements('.map__filters', 'fieldset, fieldset>input, select');
-};
-
-const setAddress = (x, y) => {
-  addressInput.value = `${x.toFixed(5)}, ${y.toFixed(5)}`;
 };
 
 const setValidators = () => {
@@ -219,4 +235,4 @@ const setValidators = () => {
   imagesInput.addEventListener('change', imageInputValidator);
 };
 
-export { setFormRules, disableForms, enableForms, setAddress, setValidators, setFormSubmitHandler };
+export { setFormRules, disableForms, enableForms, setAddress, setValidators, setFormSubmitHandler, MAIN_LAT, MAIN_LNG, resetForm };
