@@ -9,8 +9,8 @@ const showSuccessMessage = () => {
     document.removeEventListener('keyup', escHandler);
   };
 
-  function escHandler(evt)  {
-    if(evt.key === 'Escape'){
+  function escHandler(evt) {
+    if (evt.key === 'Escape') {
       removeSuccess();
     }
   }
@@ -23,10 +23,12 @@ const showSuccessMessage = () => {
   document.addEventListener('keyup', escHandler);
 };
 
-const showErrorMessage = () => {
+const showErrorMessage = (error) => {
   const errorTemplate = document.querySelector('#error').content;
   const errorElement = errorTemplate.querySelector('.error').cloneNode(true);
-
+  if (error) {
+    errorElement.querySelector('.error__message').textContent = error;
+  }
   document.body.appendChild(errorElement);
 
   const removeSuccess = () => {
