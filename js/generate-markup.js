@@ -39,8 +39,8 @@ const generateAdMarkup = (ad) => {
   const popupDescription = popupElement.querySelector('.popup__description');
   popupDescription.textContent = offer.description;
 
+  const popupPhotos = popupElement.querySelector('.popup__photos');
   if(offer.photos) {
-    const popupPhotos = popupElement.querySelector('.popup__photos');
     popupPhotos.innerHTML = '';
     for(let i = 0; i < offer.photos.length; i++) {
       const photoImg = document.createElement('img');
@@ -51,10 +51,18 @@ const generateAdMarkup = (ad) => {
       photoImg.src = offer.photos[i];
       popupPhotos.appendChild(photoImg);
     }
+  } else {
+    popupPhotos.remove();
   }
 
+
   const popupAvatar = popupElement.querySelector('.popup__avatar');
-  popupAvatar.src = author.avatar;
+
+  if(author.avatar) {
+    popupAvatar.src = author.avatar;
+  } else {
+    popupAvatar.remove();
+  }
 
   return popupElement;
 };
